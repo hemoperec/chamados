@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { auth } from '@/lib/firebase'; // I need to export auth from firebase.ts
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Lock, User, Loader2, AlertCircle } from 'lucide-react';
@@ -33,34 +33,13 @@ export default function LoginPage() {
             await createUserWithEmailAndPassword(auth, emailToUse, password);
             router.push('/admin');
             return;
-          } catch (createErr: any) {
-            // Handle specific case where Auth is disabled in console
-            if (createErr.code === 'auth/configuration-not-found' || createErr.code === 'auth/operation-not-allowed') {
-               console.warn("Firebase Auth Providers disabled. Enabling Dev Bypass.");
-               localStorage.setItem('admin_bypass', 'true');
-               router.push('/admin');
-               return;
-            }
+          } catch (createErr) {
             console.error(createErr);
-            setError(`Erro ao criar admin: ${createErr.code || createErr.message}`);
-            return;
           }
         }
       }
-      
-      // Handle "Configuration Not Found" (Provider disabled) - Dev Bypass for Admin
-      if (err.code === 'auth/configuration-not-found' || err.code === 'auth/operation-not-allowed') {
-        if (email === 'hemope' && password === 'hemope26') {
-           localStorage.setItem('admin_bypass', 'true');
-           router.push('/admin');
-           return;
-        }
-        setError('Erro de Configuração: Habilite "Email/Password" no Firebase Console.');
-        return;
-      }
-
+      setError('Credenciais inválidas ou erro no sistema.');
       console.error(err);
-      setError(`Erro: ${err.code || err.message || 'Erro desconhecido'}`);
     } finally {
       setLoading(false);
     }
