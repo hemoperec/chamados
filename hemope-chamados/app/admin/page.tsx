@@ -65,6 +65,13 @@ export default function AdminPage() {
 
   // Auth Check
   useEffect(() => {
+    // Check for Dev Bypass
+    const isBypass = typeof window !== 'undefined' && localStorage.getItem('admin_bypass') === 'true';
+    if (isBypass) {
+      setUser({ uid: 'dev-admin', email: 'admin@hemope.com', displayName: 'Administrador (Dev)' });
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (!currentUser) {
         router.push('/login');
@@ -87,12 +94,24 @@ export default function AdminPage() {
       })) as Ticket[];
       setTickets(ticketsData);
       setLoading(false);
+    }, (error) => {
+      console.error("Error fetching tickets:", error);
+      // If permission denied (common if auth rules are strict and we are in bypass), show empty or mock
+      if (error.code === 'permission-denied') {
+        alert("Aviso: Permissão negada no Firestore. Verifique as Regras de Segurança no Firebase Console.");
+      }
+      setLoading(false);
     });
 
     return () => unsubscribe();
   }, [user]);
 
   const handleLogout = async () => {
+    if (localStorage.getItem('admin_bypass')) {
+      localStorage.removeItem('admin_bypass');
+      router.push('/login');
+      return;
+    }
     await signOut(auth);
     router.push('/login');
   };
