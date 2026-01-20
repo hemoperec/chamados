@@ -109,6 +109,7 @@ export default function AdminPage() {
   const handleLogout = async () => {
     if (localStorage.getItem('admin_bypass')) {
       localStorage.removeItem('admin_bypass');
+      setUser(null);
       router.push('/login');
       return;
     }

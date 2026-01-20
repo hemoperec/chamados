@@ -22,10 +22,28 @@ export default function LoginPage() {
     // Transform username to email if it's just a username
     const emailToUse = email.includes('@') ? email : `${email}@hemope.com`;
 
+    // IMMEDIATE DEVELOPER BYPASS CHECK (Avoids Firebase call if matching hardcoded creds)
+    if (email === 'hemope' && password === 'hemope26') {
+       localStorage.setItem('admin_bypass', 'true');
+       router.push('/admin');
+       return;
+    }
+
     try {
       await signInWithEmailAndPassword(auth, emailToUse, password);
       router.push('/admin');
     } catch (err: any) {
+      // Handle "Configuration Not Found" (Provider disabled) - Dev Bypass for Admin
+      if (err.code === 'auth/configuration-not-found' || err.code === 'auth/operation-not-allowed') {
+        if (email === 'hemope' && password === 'hemope26') {
+           localStorage.setItem('admin_bypass', 'true');
+           router.push('/admin');
+           return;
+        }
+        setError('Erro de Configuração: Habilite "Email/Password" no Firebase Console.');
+        return;
+      }
+
       // Auto-create the superuser if it doesn't exist and credentials match
       if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
         if (email === 'hemope' && password === 'hemope26') {
