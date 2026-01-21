@@ -1182,59 +1182,8 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* Bar Chart - Technician Performance (Admin Only) */}
-          {isAdmin && adminStats && adminStats.techData.length > 0 && (
-            <div className="bg-[#1e293b] p-6 rounded-3xl border border-white/5 shadow-xl col-span-1 lg:col-span-2">
-              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-emerald-400" /> Top
-                Técnicos (Encerrados)
-              </h3>
-              <div className="h-[250px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={adminStats.techData}>
-                    <CartesianGrid
-                      strokeDasharray="3 3"
-                      stroke="#334155"
-                      vertical={false}
-                    />
-                    <XAxis
-                      dataKey="name"
-                      stroke="#94a3b8"
-                      fontSize={12}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <YAxis
-                      stroke="#94a3b8"
-                      fontSize={12}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <ReTooltip
-                      cursor={{ fill: "#334155", opacity: 0.4 }}
-                      contentStyle={{
-                        backgroundColor: "#0f172a",
-                        borderColor: "#334155",
-                        borderRadius: "12px",
-                        color: "#fff",
-                      }}
-                    />
-                    <Bar
-                      dataKey="value"
-                      fill="#10b981" // emerald-500
-                      radius={[4, 4, 0, 0]}
-                      barSize={40}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Sector Chart (Moved down for Admin layout balance) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-[#1e293b] p-6 rounded-3xl border border-white/5 shadow-xl">
+          {/* Sector Chart (Moved here to be next to Priority) */}
+          <div className="bg-[#1e293b] p-6 rounded-3xl border border-white/5 shadow-xl col-span-1 lg:col-span-2">
             <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
               <BarChart3 className="w-5 h-5 text-gray-400" /> Top Setores com
               Chamados
@@ -1280,6 +1229,55 @@ export default function AdminPage() {
             </div>
           </div>
         </div>
+
+        {/* Technician Performance (Full width) */}
+        {isAdmin && adminStats && adminStats.techData.length > 0 && (
+          <div className="bg-[#1e293b] p-6 rounded-3xl border border-white/5 shadow-xl">
+            <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
+              <CheckCircle className="w-5 h-5 text-emerald-400" /> Top Técnicos
+              (Encerrados)
+            </h3>
+            <div className="h-[250px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={adminStats.techData}>
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="#334155"
+                    vertical={false}
+                  />
+                  <XAxis
+                    dataKey="name"
+                    stroke="#94a3b8"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    stroke="#94a3b8"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <ReTooltip
+                    cursor={{ fill: "#334155", opacity: 0.4 }}
+                    contentStyle={{
+                      backgroundColor: "#0f172a",
+                      borderColor: "#334155",
+                      borderRadius: "12px",
+                      color: "#fff",
+                    }}
+                  />
+                  <Bar
+                    dataKey="value"
+                    fill="#10b981" // emerald-500
+                    radius={[4, 4, 0, 0]}
+                    barSize={40}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        )}
 
         {/* Active Tickets List */}
         <div className="bg-[#1e293b] rounded-3xl border border-white/5 shadow-xl overflow-hidden">
