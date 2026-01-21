@@ -11,20 +11,38 @@ import {
   doc,
   updateDoc,
   Timestamp,
+<<<<<<< HEAD
   serverTimestamp,
   runTransaction,
 } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { SECTORS } from "@/lib/sectors";
 import { CATALOG, getResponsibleTech } from "@/lib/catalog";
+=======
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+import { useRouter } from "next/navigation";
+import { SECTORS } from "@/lib/sectors";
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LogOut,
   UserPlus,
+<<<<<<< HEAD
+=======
+  LayoutDashboard,
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
   CheckCircle,
   Clock,
   AlertTriangle,
   Search,
+<<<<<<< HEAD
+=======
+  Filter,
+  MoreVertical,
+  Trash2,
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
   X,
   Activity,
   BarChart3,
@@ -32,9 +50,12 @@ import {
   List,
   CheckSquare,
   MessageSquare,
+<<<<<<< HEAD
   Share2,
   Users,
   User,
+=======
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
 } from "lucide-react";
 import {
   PieChart as RePieChart,
@@ -51,7 +72,10 @@ import {
 import {
   formatDistance,
   differenceInMinutes,
+<<<<<<< HEAD
   addHours,
+=======
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
   startOfMonth,
   endOfMonth,
   startOfYear,
@@ -73,6 +97,7 @@ interface Ticket {
   observation?: string;
   technicianName?: string;
   technicianId?: string;
+<<<<<<< HEAD
   category?: string;
   serviceItem?: string;
   problemTypeId?: string;
@@ -348,6 +373,8 @@ function EscalateModal({
       </motion.div>
     </div>
   );
+=======
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
 }
 
 // Modal para criar chamado (Technician view)
@@ -378,6 +405,7 @@ function CreateTicketModal({ onClose }: { onClose: () => void }) {
 
     try {
       const selectedSector = SECTORS.find((s) => s.id === formData.sectorId);
+<<<<<<< HEAD
       
       await runTransaction(db, async (transaction) => {
         const counterRef = doc(db, "counters", "tickets");
@@ -409,6 +437,20 @@ function CreateTicketModal({ onClose }: { onClose: () => void }) {
         });
       });
 
+=======
+      await addDoc(collection(db, "tickets"), {
+        requesterName: formData.name,
+        sectorId: formData.sectorId,
+        sectorName: selectedSector
+          ? selectedSector.name
+          : formData.sectorId || sectorSearch,
+        problemTitle: formData.problem,
+        description: formData.description,
+        priority: selectedSector ? selectedSector.priority : "3",
+        status: "aberto",
+        createdAt: serverTimestamp(),
+      });
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
       onClose();
     } catch (error) {
       console.error("Error adding ticket: ", error);
@@ -542,12 +584,16 @@ function CreateUserModal({ onClose }: { onClose: () => void }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+<<<<<<< HEAD
   const [role, setRole] = useState<"N1" | "N2" | "N3">("N1");
   const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
+=======
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
+<<<<<<< HEAD
   const toggleSpecialty = (itemId: string) => {
     setSelectedSpecialties(prev => 
       prev.includes(itemId) 
@@ -556,6 +602,8 @@ function CreateUserModal({ onClose }: { onClose: () => void }) {
     );
   };
 
+=======
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -563,6 +611,16 @@ function CreateUserModal({ onClose }: { onClose: () => void }) {
     setSuccess(false);
 
     try {
+<<<<<<< HEAD
+=======
+      // 1. Create user via API Route (admin-only operation)
+      // Since we don't have a backend yet, we'll simulate or use a client-side workaround
+      // WARNING: Client-side user creation with secondary auth instance is complex.
+      // Ideally, use a Next.js API route with firebase-admin.
+      // For now, we will assume the user has the permission or use a temporary workaround.
+      // But wait, the previous context mentioned using REST API to avoid session conflict.
+
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
       const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
       const response = await fetch(
         `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`,
@@ -588,10 +646,15 @@ function CreateUserModal({ onClose }: { onClose: () => void }) {
         throw new Error(data.error?.message || "Erro ao criar usuário");
       }
 
+<<<<<<< HEAD
       // 2. Update profile (name) in Auth
       const idToken = data.idToken;
       const uid = data.localId;
       
+=======
+      // 2. Update profile (name)
+      const idToken = data.idToken;
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
       await fetch(
         `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${apiKey}`,
         {
@@ -605,6 +668,7 @@ function CreateUserModal({ onClose }: { onClose: () => void }) {
         },
       );
 
+<<<<<<< HEAD
       // 3. Create User Document in Firestore with Role and Specialties
       await setDoc(doc(db, "users", uid), {
         uid,
@@ -615,6 +679,8 @@ function CreateUserModal({ onClose }: { onClose: () => void }) {
         createdAt: serverTimestamp(),
       });
 
+=======
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
       setSuccess(true);
       setTimeout(() => {
         onClose();
@@ -627,15 +693,26 @@ function CreateUserModal({ onClose }: { onClose: () => void }) {
   };
 
   return (
+<<<<<<< HEAD
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[60] overflow-y-auto py-10">
+=======
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[60]">
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
+<<<<<<< HEAD
         className="bg-[#1e293b] p-8 rounded-3xl border border-white/10 w-full max-w-2xl shadow-2xl my-auto"
       >
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-white">Novo Técnico / Analista</h2>
+=======
+        className="bg-[#1e293b] p-8 rounded-3xl border border-white/10 w-full max-w-md shadow-2xl"
+      >
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-white">Novo Técnico</h2>
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-white transition-colors"
@@ -650,6 +727,7 @@ function CreateUserModal({ onClose }: { onClose: () => void }) {
             <p className="font-bold">Usuário criado com sucesso!</p>
           </div>
         ) : (
+<<<<<<< HEAD
           <form onSubmit={handleCreate} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Basic Info */}
@@ -767,6 +845,48 @@ function CreateUserModal({ onClose }: { onClose: () => void }) {
                   Selecione os itens que este técnico é responsável por atender.
                 </p>
               </div>
+=======
+          <form onSubmit={handleCreate} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                Nome Completo
+              </label>
+              <input
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full bg-[#0f172a] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors"
+                placeholder="Ex: João Silva"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                Email
+              </label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-[#0f172a] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors"
+                placeholder="joao@hemope.pe.gov.br"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                Senha
+              </label>
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-[#0f172a] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors"
+                placeholder="******"
+                minLength={6}
+              />
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
             </div>
 
             {error && (
@@ -893,6 +1013,7 @@ function StatCard({ title, value, icon, trend, color }: any) {
 function PriorityBadge({ priority }: { priority: string }) {
   const styles: any = {
     "1": "bg-red-500/10 text-red-500 border-red-500/20",
+<<<<<<< HEAD
     "2": "bg-blue-500/10 text-blue-500 border-blue-500/20",
     "3": "bg-gray-500/10 text-gray-400 border-gray-500/20",
   };
@@ -900,6 +1021,15 @@ function PriorityBadge({ priority }: { priority: string }) {
     "1": "Crítica (1h)",
     "2": "Normal (3h)",
     "3": "Baixa (6h)",
+=======
+    "2": "bg-orange-500/10 text-orange-500 border-orange-500/20",
+    "3": "bg-blue-500/10 text-blue-500 border-blue-500/20",
+  };
+  const labels: any = {
+    "1": "Urgente",
+    "2": "Média",
+    "3": "Normal",
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
   };
 
   return (
@@ -919,11 +1049,14 @@ export default function AdminPage() {
   const [showCreateTicket, setShowCreateTicket] = useState(false);
   const [selectedTicketToClose, setSelectedTicketToClose] =
     useState<Ticket | null>(null);
+<<<<<<< HEAD
   const [selectedTicketToEscalate, setSelectedTicketToEscalate] =
     useState<Ticket | null>(null);
   const [techViewMode, setTechViewMode] = useState<
     "all" | "mine" | "unassigned"
   >("mine");
+=======
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
   const router = useRouter();
 
   const isAdmin = useMemo(() => {
@@ -1039,6 +1172,7 @@ export default function AdminPage() {
     }
   };
 
+<<<<<<< HEAD
   const handleEscalate = async (
     ticketId: string,
     newTechName: string,
@@ -1061,6 +1195,8 @@ export default function AdminPage() {
     }
   };
 
+=======
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
   // Stats Calculations
   const stats = useMemo(() => {
     const total = tickets.length;
@@ -1151,6 +1287,7 @@ export default function AdminPage() {
       },
     ];
 
+<<<<<<< HEAD
     // Team Load (Real-time)
     const teamLoadMap: Record<string, { open: number; inProgress: number }> = {};
     TECH_TEAMS.forEach((team) => (teamLoadMap[team] = { open: 0, inProgress: 0 }));
@@ -1169,6 +1306,8 @@ export default function AdminPage() {
       .map(([name, counts]) => ({ name, ...counts }))
       .sort((a, b) => (b.open + b.inProgress) - (a.open + a.inProgress));
 
+=======
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
     return {
       monthTotal: monthTickets.length,
       monthClosed: monthTickets.filter((t) => t.status === "concluido").length,
@@ -1177,7 +1316,10 @@ export default function AdminPage() {
       techData,
       monthlyChartData,
       yearlyChartData,
+<<<<<<< HEAD
       teamLoad,
+=======
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
     };
   }, [tickets, isAdmin]);
 
@@ -1205,6 +1347,7 @@ export default function AdminPage() {
       .slice(0, 5); // Top 5 sectors
   }, [tickets]);
 
+<<<<<<< HEAD
   // Technician View Filter
   const filteredTechTickets = useMemo(() => {
     if (!user) return [];
@@ -1221,6 +1364,8 @@ export default function AdminPage() {
     return pending;
   }, [tickets, user, techViewMode]);
 
+=======
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
   const openTickets = tickets.filter((t) => t.status !== "concluido");
   const closedTickets = tickets.filter((t) => t.status === "concluido");
 
@@ -1275,6 +1420,7 @@ export default function AdminPage() {
             </div>
           </div>
 
+<<<<<<< HEAD
           <div className="flex gap-4 border-b border-white/5 pb-1">
             <button
               onClick={() => setTechViewMode("mine")}
@@ -1314,6 +1460,15 @@ export default function AdminPage() {
               </h3>
               <span className="text-xs font-medium px-3 py-1 bg-white/5 rounded-full text-gray-400">
                 {filteredTechTickets.length} pendentes
+=======
+          <div className="bg-[#1e293b] rounded-3xl border border-white/5 shadow-xl overflow-hidden">
+            <div className="p-6 border-b border-white/5 flex justify-between items-center">
+              <h3 className="text-lg font-bold flex items-center gap-2">
+                <List className="w-5 h-5 text-gray-400" /> Fila de Atendimento
+              </h3>
+              <span className="text-xs font-medium px-3 py-1 bg-white/5 rounded-full text-gray-400">
+                {openTickets.length} pendentes
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
               </span>
             </div>
 
@@ -1323,13 +1478,19 @@ export default function AdminPage() {
                   <tr>
                     <th className="px-6 py-4">Prioridade</th>
                     <th className="px-6 py-4">Problema</th>
+<<<<<<< HEAD
                     <th className="px-6 py-4">Responsável</th>
                     <th className="px-6 py-4">Setor / Solicitante</th>
                     <th className="px-6 py-4">Criação / SLA</th>
+=======
+                    <th className="px-6 py-4">Setor / Solicitante</th>
+                    <th className="px-6 py-4">Tempo</th>
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
                     <th className="px-6 py-4 text-right">Ações</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">
+<<<<<<< HEAD
                   {filteredTechTickets.length === 0 ? (
                     <tr>
                       <td
@@ -1341,6 +1502,19 @@ export default function AdminPage() {
                     </tr>
                   ) : (
                     filteredTechTickets.map((ticket) => (
+=======
+                  {openTickets.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan={5}
+                        className="px-6 py-12 text-center text-gray-500"
+                      >
+                        Nenhum chamado pendente. Bom trabalho!
+                      </td>
+                    </tr>
+                  ) : (
+                    openTickets.map((ticket) => (
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
                       <tr
                         key={ticket.id}
                         className="hover:bg-white/5 transition-colors"
@@ -1357,6 +1531,7 @@ export default function AdminPage() {
                           </div>
                         </td>
                         <td className="px-6 py-4">
+<<<<<<< HEAD
                            {ticket.technicianName ? (
                              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs border border-blue-500/20">
                                <User className="w-3 h-3" /> {ticket.technicianName}
@@ -1366,10 +1541,13 @@ export default function AdminPage() {
                            )}
                         </td>
                         <td className="px-6 py-4">
+=======
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
                           <div className="text-white">{ticket.sectorName}</div>
                           <div className="text-xs">{ticket.requesterName}</div>
                         </td>
                         <td className="px-6 py-4 font-mono text-xs">
+<<<<<<< HEAD
                           {(() => {
                              const sla = getSlaInfo(ticket);
                              if (!ticket.createdAt) return "-";
@@ -1395,16 +1573,34 @@ export default function AdminPage() {
                           <div className="flex justify-end gap-2">
                             {/* Assumir Chamado */}
                             {(!ticket.technicianName || (ticket.technicianName !== user.displayName && ticket.technicianName !== user.email)) && (
+=======
+                          {ticket.createdAt
+                            ? formatDistance(
+                                ticket.createdAt.toDate(),
+                                new Date(),
+                                { addSuffix: true, locale: ptBR },
+                              )
+                            : "-"}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <div className="flex justify-end gap-2">
+                            {ticket.status === "aberto" && (
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
                               <button
                                 onClick={() =>
                                   updateStatus(ticket.id, "em_andamento")
                                 }
                                 className="p-2 hover:bg-blue-500/20 text-blue-500 rounded-lg transition-colors border border-blue-500/20"
+<<<<<<< HEAD
                                 title="Assumir Chamado"
+=======
+                                title="Iniciar Atendimento"
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
                               >
                                 <Activity className="w-4 h-4" />
                               </button>
                             )}
+<<<<<<< HEAD
                             
                             {/* Escalar */}
                             <button
@@ -1416,6 +1612,8 @@ export default function AdminPage() {
                             </button>
 
                             {/* Finalizar */}
+=======
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
                             <button
                               onClick={() => setSelectedTicketToClose(ticket)}
                               className="p-2 hover:bg-emerald-500/20 text-emerald-500 rounded-lg transition-colors border border-emerald-500/20"
@@ -1436,6 +1634,7 @@ export default function AdminPage() {
         {showCreateTicket && (
           <CreateTicketModal onClose={() => setShowCreateTicket(false)} />
         )}
+<<<<<<< HEAD
         {selectedTicketToEscalate && (
           <EscalateModal
             ticket={selectedTicketToEscalate}
@@ -1446,6 +1645,8 @@ export default function AdminPage() {
             }}
           />
         )}
+=======
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
         {selectedTicketToClose && (
           <CloseTicketModal
             ticket={selectedTicketToClose}
@@ -1652,6 +1853,7 @@ export default function AdminPage() {
           </div>
         )}
 
+<<<<<<< HEAD
         {/* Team Load (Real-time) */}
         {isAdmin && adminStats && (
           <div className="bg-[#1e293b] p-6 rounded-3xl border border-white/5 shadow-xl">
@@ -1695,6 +1897,8 @@ export default function AdminPage() {
           </div>
         )}
 
+=======
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Donut Chart */}
@@ -1865,9 +2069,14 @@ export default function AdminPage() {
                 <tr>
                   <th className="px-6 py-4">Prioridade</th>
                   <th className="px-6 py-4">Problema</th>
+<<<<<<< HEAD
                   <th className="px-6 py-4">Responsável</th>
                   <th className="px-6 py-4">Setor / Solicitante</th>
                   <th className="px-6 py-4">Criação / SLA</th>
+=======
+                  <th className="px-6 py-4">Setor / Solicitante</th>
+                  <th className="px-6 py-4">Tempo</th>
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
                   <th className="px-6 py-4 text-right">Ações</th>
                 </tr>
               </thead>
@@ -1875,7 +2084,11 @@ export default function AdminPage() {
                 {openTickets.length === 0 ? (
                   <tr>
                     <td
+<<<<<<< HEAD
                       colSpan={6}
+=======
+                      colSpan={5}
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
                       className="px-6 py-12 text-center text-gray-500"
                     >
                       Nenhum chamado pendente no momento.
@@ -1899,6 +2112,7 @@ export default function AdminPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
+<<<<<<< HEAD
                          {ticket.technicianName ? (
                            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs border border-blue-500/20">
                              <User className="w-3 h-3" /> {ticket.technicianName}
@@ -1908,10 +2122,13 @@ export default function AdminPage() {
                          )}
                       </td>
                       <td className="px-6 py-4">
+=======
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
                         <div className="text-white">{ticket.sectorName}</div>
                         <div className="text-xs">{ticket.requesterName}</div>
                       </td>
                       <td className="px-6 py-4 font-mono text-xs">
+<<<<<<< HEAD
                         {(() => {
                            const sla = getSlaInfo(ticket);
                            if (!ticket.createdAt) return "-";
@@ -1932,6 +2149,15 @@ export default function AdminPage() {
                              </div>
                            );
                          })()}
+=======
+                        {ticket.createdAt
+                          ? formatDistance(
+                              ticket.createdAt.toDate(),
+                              new Date(),
+                              { addSuffix: true, locale: ptBR },
+                            )
+                          : "-"}
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex justify-end gap-2">
@@ -2003,6 +2229,7 @@ export default function AdminPage() {
                     >
                       <td className="px-6 py-4">
                         <div className="font-medium text-white">
+<<<<<<< HEAD
                            {ticket.categoryLabel ? (
                              <span className="text-emerald-300 font-bold">{ticket.categoryLabel}</span>
                           ) : (
@@ -2015,6 +2242,11 @@ export default function AdminPage() {
                            </div>
                         )}
                         <div className="text-xs truncate max-w-[200px] mt-1 text-gray-400">
+=======
+                          {ticket.problemTitle}
+                        </div>
+                        <div className="text-xs truncate max-w-[200px] mt-1">
+>>>>>>> 469620d32283c99111bff621cbe965468a293ee5
                           {ticket.description}
                         </div>
                         {ticket.observation && (
